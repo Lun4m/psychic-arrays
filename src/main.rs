@@ -1,9 +1,32 @@
+use num::Zero;
 use std::ops;
 
 #[derive(Debug)]
 struct Vec2<T> {
     x: T,
     y: T,
+}
+
+#[derive(Debug)]
+struct Array<T> {
+    shape: (i32, i32),
+    value: Vec<Vec<T>>,
+}
+
+impl<T: ops::Mul<Output = T> + ops::Add<Output = T> + Copy + Default> Array<T> {
+    fn zeros(shape: (i32, i32)) -> Self
+    where
+        T: Zero,
+    {
+        Array {
+            shape,
+            // value: vec![vec![0; shape.1 as usize]; shape.0 as usize],
+            value: vec![vec![T::zero(); shape.1 as usize]; shape.0 as usize],
+        }
+    }
+    fn dot(&self, other: &Array<T>) -> T {
+        unimplemented!()
+    }
 }
 
 impl<T: ops::Mul<Output = T> + ops::Add<Output = T> + Copy + Clone> Vec2<T> {
@@ -230,4 +253,7 @@ fn main() {
     let c = 2. * &a;
     println!("c = 2.0 * a = {:?} (new vector)", c);
     println!("a = {:?}", a);
+
+    let arr: Array<f64> = Array::zeros((5, 5));
+    println!("{:?}", arr);
 }
